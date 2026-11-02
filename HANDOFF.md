@@ -134,20 +134,20 @@ L'utente aveva chiesto di usare MotionSites (motionsites.ai, libreria di sezioni
 
 Una sessione cloud non può inviare a git.salvatoredelmoro.it. Si fa dal PC di Kevin.
 
-**Prima volta.** Su Forgejo, con l'account `kqppa`, si crea una repo vuota chiamata `damico`: niente README, niente licenza. Poi da terminale:
+**Prima volta.** Su Forgejo, con l'account `gionni`, si crea una repo vuota chiamata `damico`: niente README, niente licenza. Poi da terminale:
 
 ```
 git clone https://github.com/projectgenesyslabs-bit/damico.git
 cd damico
 git checkout super-redesign-damico
-git push https://git.salvatoredelmoro.it/kqppa/damico.git super-redesign-damico
+git push https://git.salvatoredelmoro.it/gionni/damico.git super-redesign-damico
 ```
 
 **Doppio push, come per il sito della Chiaramontana.** Così ogni `git push` va su GitHub e su Forgejo insieme:
 
 ```
 git remote set-url --add --push origin https://github.com/projectgenesyslabs-bit/damico.git
-git remote set-url --add --push origin https://git.salvatoredelmoro.it/kqppa/damico.git
+git remote set-url --add --push origin https://git.salvatoredelmoro.it/gionni/damico.git
 git remote -v
 ```
 
@@ -157,18 +157,12 @@ git remote -v
 
 ```
 git ls-remote https://github.com/projectgenesyslabs-bit/damico.git super-redesign-damico
-git ls-remote https://git.salvatoredelmoro.it/kqppa/damico.git super-redesign-damico
+git ls-remote https://git.salvatoredelmoro.it/gionni/damico.git super-redesign-damico
 ```
 
 I due comandi devono dare lo stesso commit.
 
-**Alternativa.** Se il ramo deve stare dentro la repo esistente `kqppa/chiaramontana-mussomeli` su Forgejo, l'ultimo comando della prima volta diventa:
-
-```
-git push https://git.salvatoredelmoro.it/kqppa/chiaramontana-mussomeli.git super-redesign-damico
-```
-
-Funziona, ma il ramo ha una storia separata da quella del sito della società. Per questo la strada consigliata è la repo `damico` a parte.
+La repo va sotto l'account `gionni`, non sotto `kqppa` (quello del sito della Chiaramontana). Indicazione dell'utente.
 
 ## Come lavorare e verificare
 
@@ -231,6 +225,8 @@ Ricostruzione della conversazione da cui è nato il progetto, 1 e 2 novembre 202
     Trovate e corrette altre quattro cose: paracadute per l'ingresso se gli script non partono, menu a tutto schermo per il mobile, tag per Google e WhatsApp con i dati strutturati del negozio, contorno oro per chi naviga con la tastiera. Provando il menu è emerso un bug vero: la barra in alto non compariva mai, nemmeno su desktop. Corretto.
 17. **"ok allora dimmi come spostare il progetto sul git di salvatore su un branch dedicato prima e mi crei un handoff completo anche con tutta la chat e le istruzioni per continuare sulle cose che mancano, le foto ecc..."**
     Scritto questo file, aggiunti `AGENTS.md` e lo strumento di verifica, pubblicato tutto su `main` e `super-redesign-damico`.
+18. **"no con l'account gionni"**
+    Su Forgejo la repo va sotto l'account `gionni`: `https://git.salvatoredelmoro.it/gionni/damico`. Istruzioni aggiornate.
 
 ## Registro degli interventi
 
