@@ -1,6 +1,8 @@
 // Gioielleria D'Amico: regia dello scorrimento, ingresso, orologio, orari, vetrina.
 import { createScene } from './scene.js';
 
+window.__damicoReady = true; // il paracadute in index.html non serve: gli script sono partiti
+
 const gsap = window.gsap;
 const ScrollTrigger = window.ScrollTrigger;
 gsap.registerPlugin(ScrollTrigger);
@@ -35,7 +37,19 @@ if (!reduced && window.Lenis) {
   gsap.ticker.lagSmoothing(0);
   lenis.stop();
 }
+const menu = $('.menu'), menuBtn = $('.nav__menu');
+function setMenu(open) {
+  document.body.classList.toggle('menu-open', open);
+  menuBtn.setAttribute('aria-expanded', String(open));
+  menu.setAttribute('aria-hidden', String(!open));
+  $('.nav__menu-label').textContent = open ? 'Chiudi' : 'Menu';
+  if (lenis) open ? lenis.stop() : lenis.start();
+}
+menuBtn.addEventListener('click', () => setMenu(!document.body.classList.contains('menu-open')));
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && document.body.classList.contains('menu-open')) setMenu(false); });
+
 $$('a[href^="#"]').forEach((a) => a.addEventListener('click', (e) => {
+  if (document.body.classList.contains('menu-open')) setMenu(false);
   const id = a.getAttribute('href');
   const el = id === '#top' ? document.body : $(id);
   if (!el) return;
@@ -80,7 +94,8 @@ Promise.all([fonts, minTime]).then(() => {
     .to('.loader__mono', { scale: .8, opacity: 0, duration: .7, ease: 'power2.in' }, '<')
     .to('.loader', { clipPath: 'inset(0 0 100% 0)', duration: 1.1, ease: 'expo.inOut' }, '-=.2')
     .add(() => {
-      $('.loader').remove();
+      const loader = $('.loader');
+      if (loader) loader.remove();
       document.body.classList.remove('is-loading');
       lenis && lenis.start();
       ScrollTrigger.refresh();
@@ -90,7 +105,8 @@ Promise.all([fonts, minTime]).then(() => {
       duration: 1.6, stagger: .07, ease: 'expo.out'
     }, '-=.75')
     .from('.reveal-line > span', { yPercent: 110, duration: 1.2, stagger: .12, ease: 'expo.out' }, '-=1.3')
-    .from('.nav', { yPercent: -100, opacity: 0, duration: 1, ease: 'expo.out' }, '-=1.1')
+    // si animano i figli: la barra ha già una transizione CSS sul movimento e le due si scontrerebbero
+    .from('.nav > *', { y: -40, opacity: 0, duration: 1, stagger: .08, ease: 'expo.out', clearProps: 'transform,opacity' }, '-=1.1')
     .from('.hero__scroll', { opacity: 0, duration: 1 }, '-=.6')
     .add(buildHeroText);
   if (scene) {

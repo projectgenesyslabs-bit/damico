@@ -1,5 +1,7 @@
 # Gioielleria D'Amico, Mussomeli
 
+Prima di lavorarci leggi `HANDOFF.md`: stato, dati del negozio, cose da fare, istruzioni per Forgejo.
+
 Sito vetrina per la Gioielleria D'Amico, Via Principe di Scalea 34, 93014 Mussomeli (CL).
 
 ## Aprirlo in locale

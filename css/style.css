@@ -148,6 +148,43 @@ main, .footer, .nav { position: relative; z-index: 2; }
 }
 .nav__call:hover { background: var(--gold-3); color: var(--ink); }
 .magnetic span { display: inline-block; pointer-events: none; }
+.nav__right { display: flex; align-items: center; gap: 12px; }
+.nav__menu {
+  display: none;
+  font: inherit; font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: var(--ivory);
+  background: none; border: 0; padding: 10px 2px; cursor: pointer;
+}
+
+/* ---------- Menu a tutto schermo (schermi piccoli) ---------- */
+.menu {
+  position: fixed; inset: 0; z-index: 45;
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 0 var(--gutter);
+  background: var(--ink);
+  clip-path: circle(0% at calc(100% - 40px) 36px);
+  visibility: hidden;
+  transition: clip-path .9s var(--ease), visibility 0s .9s;
+}
+.menu-open .menu { clip-path: circle(150% at calc(100% - 40px) 36px); visibility: visible; transition: clip-path .9s var(--ease), visibility 0s; }
+.menu-open { overflow: hidden; }
+.menu__links { display: flex; flex-direction: column; gap: 6px; }
+.menu__links a {
+  font-family: var(--serif); font-style: italic; font-weight: 300; font-size: clamp(44px, 13vw, 72px); line-height: 1.1;
+  background: var(--gold); background-size: 250% 100%; -webkit-background-clip: text; background-clip: text; color: transparent;
+  transform: translateY(40px); opacity: 0;
+  transition: transform .8s var(--ease), opacity .8s var(--ease);
+}
+.menu-open .menu__links a { transform: none; opacity: 1; }
+.menu-open .menu__links a:nth-child(2) { transition-delay: .06s; }
+.menu-open .menu__links a:nth-child(3) { transition-delay: .12s; }
+.menu-open .menu__links a:nth-child(4) { transition-delay: .18s; }
+.menu-open .menu__links a:nth-child(5) { transition-delay: .24s; }
+.menu__foot { margin: 48px 0 0; color: var(--ivory-dim); font-size: 15px; }
+.menu__foot a { color: var(--ivory); }
+.menu-open .nav { transform: none; background: none; }
+
+/* ---------- Tastiera: contorno oro visibile ---------- */
+:focus-visible { outline: 1px solid var(--gold-3); outline-offset: 5px; border-radius: 2px; }
 
 /* ---------- Apertura ---------- */
 .hero { position: relative; height: 320vh; }
@@ -278,6 +315,7 @@ main, .footer, .nav { position: relative; z-index: 2; }
 /* ---------- Schermi piccoli ---------- */
 @media (max-width: 900px) {
   .nav__links { display: none; }
+  .nav__menu { display: block; }
   .nav { padding: 16px var(--gutter); }
   .nav__brand { font-size: 26px; }
   .nav__call { padding: 10px 18px; font-size: 12px; }
