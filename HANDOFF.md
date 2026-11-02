@@ -6,7 +6,7 @@ Documento per chi riprende il lavoro, persona o agente. Si legge tutto prima di 
 
 - **Repo GitHub:** https://github.com/projectgenesyslabs-bit/damico (privata).
 - **Rami:** `main` e `super-redesign-damico` puntano allo stesso commit. Il ramo dedicato serve per Forgejo.
-- **Forgejo di Salvatore:** il lavoro **non è ancora** su git.salvatoredelmoro.it. Una sessione cloud non lo raggiunge. Va copiato dal PC di Kevin, vedi "Portare il progetto su Forgejo".
+- **Forgejo di Salvatore:** il ramo `super-redesign-damico` è su https://git.salvatoredelmoro.it/gionni/damico, caricato il 2 novembre 2026 dal Mac di Giovanni. Una sessione cloud non raggiunge Forgejo: dopo ogni lavoro fatto nel cloud si riallinea dal Mac con `git pull` e `git push https://git.salvatoredelmoro.it/gionni/damico.git super-redesign-damico`.
 - **Sito:** struttura, animazioni e contenuti testuali completi. Verificato a 1440 e a 375 px senza errori in console e senza scorrimento orizzontale.
 - **Manca:** le foto del negozio, la conferma degli orari, una prova su un computer vero (mappa compresa), un dominio dove pubblicarlo.
 
@@ -227,10 +227,14 @@ Ricostruzione della conversazione da cui è nato il progetto, 1 e 2 novembre 202
     Scritto questo file, aggiunti `AGENTS.md` e lo strumento di verifica, pubblicato tutto su `main` e `super-redesign-damico`.
 18. **"no con l'account gionni"**
     Su Forgejo la repo va sotto l'account `gionni`: `https://git.salvatoredelmoro.it/gionni/damico`. Istruzioni aggiornate.
+19. **Clonazione sul Mac: "Repository not found"**
+    La repo GitHub era privata e git sul Mac non aveva l'accesso. L'utente l'ha resa pubblica dal sito di GitHub.
+20. **Push su Forgejo riuscito**
+    Dal Mac di Giovanni: `* [new branch] super-redesign-damico -> super-redesign-damico` su `gionni/damico`.
 
 ## Registro degli interventi
 
 ### 2 novembre 2026
 - **Cambiato:** prima versione completa del sito, poi rifiniture della scena 3D, menu mobile, paracadute dell'ingresso, tag per Google e WhatsApp, dati strutturati, contorno per la tastiera, handoff, regole del progetto, strumento di verifica.
 - **Verificato:** `strumenti/verifica.js` dà "Tutto a posto": screenshot a 1440 e 375 px di tutte le sezioni, console senza errori, nessuno scorrimento orizzontale, menu mobile che si apre e si chiude. Aprendo `index.html` con doppio clic, dopo 7 secondi la pagina si vede. Vetrina e lente provate con immagini finte iniettate solo nel browser di prova. Fondo del canvas misurato al pixel.
-- **Aperto:** foto, conferma orari, prova su un computer vero, mappa, pubblicazione su un dominio, copia su Forgejo.
+- **Aperto:** foto, conferma orari, prova su un computer vero, mappa, pubblicazione su un dominio. La repo GitHub è pubblica: si può rimettere privata.
