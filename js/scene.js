@@ -57,6 +57,41 @@ function buildEnvScene() {
   return env;
 }
 
+/* ---------- Ambiente del diamante: box chiaro con strisce scure ---------- */
+function buildDiamondEnv() {
+  const env = new THREE.Scene();
+  env.add(new THREE.Mesh(
+    new THREE.SphereGeometry(20, 64, 32),
+    new THREE.ShaderMaterial({
+      side: THREE.BackSide, depthWrite: false,
+      vertexShader: `varying vec3 vP; void main(){ vP = normalize(position); gl_Position = projectionMatrix*modelViewMatrix*vec4(position,1.); }`,
+      fragmentShader: `varying vec3 vP; void main(){
+        float y = vP.y;
+        vec3 c = mix(vec3(.3,.28,.26), vec3(.95,.92,.88), smoothstep(-.7, .9, y));
+        c *= .06 + .94 * smoothstep(.02, .25, abs(y - .08));          // fascia scura all'orizzonte
+        float a = atan(vP.z, vP.x);
+        c *= .2 + .8 * smoothstep(.15, .85, abs(sin(a * 4.)));         // spicchi alternati
+        gl_FragColor = vec4(c, 1.); }`
+    })
+  ));
+  let seed = 11;
+  const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  for (let i = 0; i < 10; i++) {                                        // strisce nere
+    const m = new THREE.Mesh(new THREE.PlaneGeometry(.6 + rnd() * 1.4, 6 + rnd() * 6), new THREE.MeshBasicMaterial({ color: 0x000000, side: THREE.DoubleSide }));
+    m.position.setFromSphericalCoords(9, .6 + rnd() * 1.6, rnd() * Math.PI * 2);
+    m.lookAt(0, 0, 0); m.rotateZ(rnd() * Math.PI);
+    env.add(m);
+  }
+  for (let i = 0; i < 40; i++) {                                        // punti di luce intensi
+    const sz = .2 + rnd() * .6;
+    const m = new THREE.Mesh(new THREE.PlaneGeometry(sz, sz), new THREE.MeshBasicMaterial({ color: new THREE.Color(1, .97, .92).multiplyScalar(4 + rnd() * 8), side: THREE.DoubleSide }));
+    m.position.setFromSphericalCoords(8.5, Math.acos(1 - 2 * rnd()), rnd() * Math.PI * 2);
+    m.lookAt(0, 0, 0);
+    env.add(m);
+  }
+  return env;
+}
+
 /* ---------- Diamante taglio brillante (57 faccette, semplificato) ---------- */
 function brilliantGeometry() {
   const P = [];
@@ -129,17 +164,17 @@ function diamondMaterial(envCube) {
         vec3 N = normalize(vN);
         vec3 R = reflect(V, N);
         // rifrazione con dispersione: tre indici, uno per canale
-        vec3 iors = vec3(2.40, 2.42, 2.46);
+        vec3 iors = vec3(2.39, 2.42, 2.48);
         vec3 refr;
         vec3 flip = vec3(1., -1., 1.);
         vec3 tr = refract(V, N, 1./iors.r); vec3 tg = refract(V, N, 1./iors.g); vec3 tb = refract(V, N, 1./iors.b);
         // il padiglione rimanda la luce verso l'alto: simuliamo un rimbalzo interno
-        refr.r = env(reflect(tr, normalize(N*flip + vec3(0.,.35,0.)))).r;
-        refr.g = env(reflect(tg, normalize(N*flip + vec3(0.,.35,0.)))).g;
-        refr.b = env(reflect(tb, normalize(N*flip + vec3(0.,.35,0.)))).b;
-        refr += .35 * vec3(env(tr*flip).r, env(tg*flip).g, env(tb*flip).b);
+        vec3 nb = normalize(N*flip + vec3(0.,.35,0.));
+        vec3 base = env(reflect(tg, nb)) + .35 * env(tg*flip);
+        vec3 disp = vec3(env(reflect(tr, nb)).r + .35 * env(tr*flip).r, base.g, env(reflect(tb, nb)).b + .35 * env(tb*flip).b);
+        refr = mix(base, disp, .55); // il fuoco colora le faccette senza tingere tutta la pietra
         float F = .17 + .83 * pow(1. - max(dot(-V, N), 0.), 5.);
-        refr = pow(refr, vec3(1.35)) * 1.5;
+        refr = pow(refr, vec3(1.6)) * 1.1;
         vec3 col = mix(refr, env(R), F);
         // lampi
         vec3 L1 = normalize(vec3(.4, .9, .5)), L2 = normalize(vec3(-.7, .6, .3));
@@ -211,7 +246,7 @@ export function createScene(canvas, onProgress = () => {}) {
   const envScene = buildEnvScene();
   const cubeRT = new THREE.WebGLCubeRenderTarget(512, { type: THREE.HalfFloatType });
   const cubeCam = new THREE.CubeCamera(.1, 50, cubeRT);
-  cubeCam.update(renderer, envScene);
+  cubeCam.update(renderer, buildDiamondEnv());
   const pmrem = new THREE.PMREMGenerator(renderer);
   scene.environment = pmrem.fromScene(envScene, .015).texture;
   onProgress(.45);

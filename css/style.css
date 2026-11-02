@@ -218,15 +218,15 @@ main, .footer, .nav { position: relative; z-index: 2; }
 .watch__hand--s path, .watch__hand--s circle { fill: #c9a25a; }
 
 .stud { width: min(30vw, 400px); overflow: visible; filter: drop-shadow(0 30px 50px rgba(0, 0, 0, .6)); }
-.stud__halo { fill: none; stroke: rgba(233, 199, 126, .25); stroke-width: .6; stroke-dasharray: 2 6; transform-origin: center; animation: spin 40s linear infinite; }
+.stud__halo { transform-box: fill-box; fill: none; stroke: rgba(233, 199, 126, .25); stroke-width: .6; stroke-dasharray: 2 6; transform-origin: center; animation: spin 40s linear infinite; }
 .stud__prongs circle { fill: url(#case); }
 .stud__facets path { stroke: rgba(255, 255, 255, .5); stroke-width: .5; }
-.stud__glints path { fill: #fff; opacity: .9; transform-origin: center; animation: glint 3.4s var(--ease) infinite; mix-blend-mode: screen; }
+.stud__glints path { transform-box: fill-box; fill: #fff; opacity: .9; transform-origin: center; animation: glint 3.4s var(--ease) infinite; mix-blend-mode: screen; }
 @keyframes spin { to { transform: rotate(360deg); } }
 @keyframes glint { 0%, 70%, 100% { transform: scale(0) rotate(0deg); opacity: 0; } 82% { transform: scale(1) rotate(45deg); opacity: 1; } }
 
 /* ---------- Vetrina ---------- */
-.vetrina { position: relative; padding: 18vh 0 14vh; }
+.vetrina { position: relative; padding: 18vh 0 14vh; overflow: hidden; }
 .vetrina__head { padding: 0 var(--gutter); display: flex; justify-content: space-between; align-items: end; gap: 32px; flex-wrap: wrap; margin-bottom: 8vh; }
 .vetrina__note { color: var(--ivory-dim); max-width: 32ch; margin: 0; }
 .vetrina__rail { display: flex; gap: clamp(16px, 2vw, 32px); padding: 0 var(--gutter); width: max-content; will-change: transform; }

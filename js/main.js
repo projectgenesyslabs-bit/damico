@@ -91,7 +91,8 @@ Promise.all([fonts, minTime]).then(() => {
     }, '-=.75')
     .from('.reveal-line > span', { yPercent: 110, duration: 1.2, stagger: .12, ease: 'expo.out' }, '-=1.3')
     .from('.nav', { yPercent: -100, opacity: 0, duration: 1, ease: 'expo.out' }, '-=1.1')
-    .from('.hero__scroll', { opacity: 0, duration: 1 }, '-=.6');
+    .from('.hero__scroll', { opacity: 0, duration: 1 }, '-=.6')
+    .add(buildHeroText);
   if (scene) {
     const p = { v: 0 };
     tl.to(p, { v: 1, duration: 2.6, ease: 'power3.out', onUpdate: () => scene.setIntro(p.v) }, 1.1);
@@ -109,8 +110,9 @@ function keyframes() {
   return [
     { at: 0, camZ: far, camY: .3, tgtY: .25, posX: 0, posY: 0, rot: 0 },
     { at: .38, camZ: 3.6 * Math.min(f, 1.4), camY: 1.05, tgtY: 1.0, posX: 0, posY: 0, rot: Math.PI * .9 },
-    { at: .66, camZ: 1.5 * Math.min(f, 1.25), camY: 2.05, tgtY: 1.42, posX: 0, posY: 0, rot: Math.PI * 1.6 },
-    { at: .82, camZ: 1.6 * Math.min(f, 1.25), camY: 2.0, tgtY: 1.42, posX: 0, posY: 0, rot: Math.PI * 1.8 },
+    // sugli schermi verticali la camera resta più indietro e il diamante sta più in alto, lontano dal testo
+    { at: .66, camZ: 1.5 * Math.min(f, 2.4), camY: portrait ? 1.75 : 2.05, tgtY: portrait ? 1.12 : 1.42, posX: 0, posY: 0, rot: Math.PI * 1.6 },
+    { at: .82, camZ: 1.6 * Math.min(f, 2.4), camY: portrait ? 1.7 : 2.0, tgtY: portrait ? 1.12 : 1.42, posX: 0, posY: 0, rot: Math.PI * 1.8 },
     { at: 1, camZ: portrait ? far * 1.05 : 6.2, camY: .3, tgtY: .25,
       posX: portrait ? 0 : 1.85, posY: portrait ? -1.25 * f : 0, rot: Math.PI * 2 }
   ];
@@ -144,18 +146,21 @@ ScrollTrigger.create({
   onUpdate: (st) => { state.hero = st.progress; updateScene(); }
 });
 
-// testo dell'apertura
-const heroTl = gsap.timeline({
-  scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom bottom', scrub: .6 }
-});
-heroTl
-  .to('.hero__kicker, .hero__sub, .hero__scroll', { opacity: 0, y: -30, duration: .12, ease: 'none' }, 0)
-  .to('.hero__title .char', {
-    yPercent: -60, opacity: 0, filter: 'blur(12px)', duration: .22, stagger: { each: .02, from: 'center' }, ease: 'power1.in'
-  }, .04)
-  .fromTo('.hero__close', { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .1, ease: 'none' }, .5)
-  .to('.hero__close', { opacity: 0, y: -40, duration: .08, ease: 'none' }, .84)
-  .to({}, { duration: .01 }, .99);
+// testo dell'apertura legato allo scorrimento.
+// Si crea solo a ingresso finito: così le due animazioni non si contendono le stesse lettere.
+function buildHeroText() {
+  const heroTl = gsap.timeline({
+    scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom bottom', scrub: .6 }
+  });
+  heroTl
+    .to('.hero__meta, .hero__scroll', { opacity: 0, y: -30, duration: .12, ease: 'none' }, 0)
+    .to('.hero__title .char', {
+      yPercent: -60, opacity: 0, filter: 'blur(12px)', duration: .22, stagger: { each: .02, from: 'center' }, ease: 'power1.in'
+    }, .04)
+    .fromTo('.hero__close', { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .1, ease: 'none' }, .5)
+    .to('.hero__close', { opacity: 0, y: -40, duration: .08, ease: 'none' }, .84)
+    .to({}, { duration: .01 }, .99);
+}
 
 // i tre mestieri: binario orizzontale dentro una sezione alta
 const track = $('.mestieri__track');
