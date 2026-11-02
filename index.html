@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Gioielleria D'Amico | Mussomeli</title>
+  <meta name="description" content="Gioielleria D'Amico a Mussomeli, Via Principe di Scalea 34. Gioielli, orologi e piercing al lobo con sistema Studex.">
+  <meta name="theme-color" content="#0b0a09">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="fonts/cormorant-garamond-latin-300-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/manrope-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="vendor/lenis/lenis.css">
+  <link rel="stylesheet" href="css/style.css">
+  <script type="importmap">
+    { "imports": {
+        "three": "./vendor/three/three.module.min.js",
+        "three/addons/": "./vendor/three/addons/"
+    } }
+  </script>
+</head>
+<body class="is-loading">
+
+  <!-- Ingresso: il monogramma si disegna mentre si caricano le risorse -->
+  <div class="loader" aria-hidden="true">
+    <svg class="loader__mono" viewBox="0 0 200 200">
+      <defs>
+        <linearGradient id="gold-stroke" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#8a6a2e"/>
+          <stop offset=".45" stop-color="#f6dc9a"/>
+          <stop offset="1" stop-color="#a77d35"/>
+        </linearGradient>
+      </defs>
+      <circle class="loader__ring" cx="100" cy="100" r="92"/>
+      <text class="loader__letters" x="100" y="122" text-anchor="middle">D'A</text>
+    </svg>
+    <div class="loader__count"><span>0</span></div>
+  </div>
+
+  <canvas class="gl" aria-hidden="true"></canvas>
+  <div class="grain" aria-hidden="true"></div>
+  <div class="cursor" aria-hidden="true"><span class="cursor__dot"></span><span class="cursor__ring"></span></div>
+  <div class="loupe" aria-hidden="true"></div>
+
+  <header class="nav">
+    <a class="nav__brand" href="#top" aria-label="Gioielleria D'Amico, torna in cima">D'Amico</a>
+    <nav class="nav__links" aria-label="Sezioni">
+      <a href="#mestieri">Gioielli</a>
+      <a href="#orologi">Orologi</a>
+      <a href="#piercing">Piercing</a>
+      <a href="#vetrina" data-needs-photos>Vetrina</a>
+      <a href="#visita">Visita</a>
+    </nav>
+    <a class="nav__call magnetic" href="tel:+390934951393"><span>Chiama</span></a>
+  </header>
+
+  <main id="top">
+
+    <!-- 1. Apertura: l'anello in 3D vive nel canvas dietro al testo -->
+    <section class="hero" data-scene="hero">
+      <div class="hero__sticky">
+        <h1 class="hero__title" aria-label="Gioielleria D'Amico">
+          <span class="split">D'Amico</span>
+        </h1>
+        <div class="hero__meta">
+          <p class="hero__sub reveal-line"><span>Gioielli, orologi e piercing<br>nel cuore di Mussomeli.</span></p>
+          <p class="hero__kicker reveal-line"><span>Via Principe di Scalea 34</span></p>
+        </div>
+        <div class="hero__scroll" aria-hidden="true"><span></span>Scorri</div>
+
+        <p class="hero__close" aria-hidden="true">
+          <em>Guardala</em><br>da vicino.
+        </p>
+      </div>
+    </section>
+
+    <!-- 2. I tre mestieri del negozio, in orizzontale -->
+    <section class="mestieri" id="mestieri" data-scene="mestieri">
+      <div class="mestieri__pin">
+        <div class="mestieri__track">
+
+          <article class="panel panel--oro">
+            <div class="panel__text">
+              <span class="panel__num">I</span>
+              <h2 class="panel__title">Gioielli</h2>
+              <p class="panel__body">Anelli in oro, collane e bracciali in argento, orecchini.
+                Da vedere da vicino e provare al banco.</p>
+            </div>
+            <div class="panel__stage" aria-hidden="true"></div>
+          </article>
+
+          <article class="panel panel--tempo" id="orologi">
+            <div class="panel__text">
+              <span class="panel__num">II</span>
+              <h2 class="panel__title">Orologi</h2>
+              <p class="panel__body">Orologeria per lui e per lei, in vetrina in Via Principe di Scalea.</p>
+              <p class="panel__live">A Mussomeli sono le <time class="live-time">--:--:--</time></p>
+            </div>
+            <div class="panel__stage">
+              <svg class="watch" viewBox="-160 -160 320 320" role="img" aria-label="Orologio che segna l'ora attuale di Mussomeli">
+                <defs>
+                  <radialGradient id="dial" cx="0" cy="0" r="1" gradientUnits="objectBoundingBox">
+                    <stop offset="0" stop-color="#1b1712"/>
+                    <stop offset="1" stop-color="#0d0b09"/>
+                  </radialGradient>
+                  <linearGradient id="case" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0" stop-color="#f7e1a6"/>
+                    <stop offset=".35" stop-color="#b8893f"/>
+                    <stop offset=".6" stop-color="#f3d58e"/>
+                    <stop offset="1" stop-color="#7d5c26"/>
+                  </linearGradient>
+                </defs>
+                <circle r="150" fill="url(#case)"/>
+                <circle r="138" fill="#0b0a09"/>
+                <circle r="134" fill="url(#dial)"/>
+                <g class="watch__guilloche"></g>
+                <g class="watch__ticks"></g>
+                <text class="watch__brand" y="-52" text-anchor="middle">D'Amico</text>
+                <text class="watch__city" y="64" text-anchor="middle">Mussomeli</text>
+                <g class="watch__hand watch__hand--h"><path d="M-5 14 L-3 -70 L0 -78 L3 -70 L5 14 Z"/></g>
+                <g class="watch__hand watch__hand--m"><path d="M-4 16 L-2 -104 L0 -112 L2 -104 L4 16 Z"/></g>
+                <g class="watch__hand watch__hand--s"><path d="M-1 28 L-0.8 -120 L0.8 -120 L1 28 Z"/><circle r="5"/></g>
+                <circle r="2.2" fill="#0b0a09"/>
+              </svg>
+            </div>
+          </article>
+
+          <article class="panel panel--lobo" id="piercing">
+            <div class="panel__text">
+              <span class="panel__num">III</span>
+              <h2 class="panel__title">Piercing</h2>
+              <p class="panel__body">Foro al lobo con il sistema Studex, sterile e monouso.
+                Si sceglie il punto luce, poi si fa in pochi minuti.</p>
+            </div>
+            <div class="panel__stage">
+              <svg class="stud" viewBox="-75 -75 150 150" aria-hidden="true">
+                <defs>
+                  <radialGradient id="stone" cx=".35" cy=".3" r=".8">
+                    <stop offset="0" stop-color="#ffffff"/>
+                    <stop offset=".4" stop-color="#dfe8f0"/>
+                    <stop offset="1" stop-color="#8fa0b0"/>
+                  </radialGradient>
+                </defs>
+                <circle class="stud__halo" r="68"/>
+                <g class="stud__prongs">
+                  <circle cx="0" cy="-46" r="7"/><circle cx="46" cy="0" r="7"/>
+                  <circle cx="0" cy="46" r="7"/><circle cx="-46" cy="0" r="7"/>
+                </g>
+                <circle r="44" fill="url(#case)"/>
+                <g class="stud__facets"></g>
+                <g class="stud__glints">
+                  <path d="M0 -70 L4 -4 L70 0 L4 4 L0 70 L-4 4 L-70 0 L-4 -4 Z"/>
+                </g>
+              </svg>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Vetrina: le foto della gioielleria. Si mostra solo se ci sono foto in js/foto.js -->
+    <section class="vetrina" id="vetrina" data-needs-photos hidden>
+      <header class="vetrina__head">
+        <h2 class="section-title"><span class="split">In vetrina</span></h2>
+        <p class="vetrina__note">Passa sopra una foto: la lente la ingrandisce come al banco.</p>
+      </header>
+      <div class="vetrina__rail"></div>
+    </section>
+
+    <!-- 4. Visita -->
+    <section class="visita" id="visita">
+      <div class="visita__grid">
+        <div class="visita__left">
+          <h2 class="section-title"><span class="split">Vieni a trovarci</span></h2>
+          <p class="status" data-status><span class="status__dot"></span><span class="status__text">Controllo gli orari</span></p>
+
+          <address class="visita__address">
+            Via Principe di Scalea 34<br>
+            93014 Mussomeli (CL)
+          </address>
+
+          <ul class="visita__contacts">
+            <li><a class="link-gold" href="tel:+390934951393">0934 951393</a></li>
+            <li><a class="link-gold" href="mailto:damicogioielleria@gmail.com">damicogioielleria@gmail.com</a></li>
+            <li><a class="link-gold" href="https://www.instagram.com/gioielleriadamico/" target="_blank" rel="noopener">Instagram</a>
+                e <a class="link-gold" href="https://www.facebook.com/damico.gioielleria" target="_blank" rel="noopener">Facebook</a></li>
+          </ul>
+
+          <table class="orari" aria-label="Orari di apertura">
+            <tbody></tbody>
+          </table>
+        </div>
+
+        <div class="visita__map">
+          <iframe title="Mappa: Via Principe di Scalea 34, Mussomeli" loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            src="https://www.google.com/maps?q=Via%20Principe%20di%20Scalea%2034%2C%2093014%20Mussomeli%20CL&z=17&output=embed"></iframe>
+          <a class="visita__route magnetic" target="_blank" rel="noopener"
+             href="https://www.google.com/maps/dir/?api=1&destination=Via%20Principe%20di%20Scalea%2034%2C%2093014%20Mussomeli%20CL"><span>Portami qui</span></a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p class="footer__word" aria-label="D'Amico"><span>D'Amico</span></p>
+    <div class="footer__row">
+      <span>Gioielleria D'Amico, Via Principe di Scalea 34, Mussomeli</span>
+      <a href="#top" class="link-gold">Torna su</a>
+    </div>
+  </footer>
+
+  <script src="vendor/gsap/gsap.min.js"></script>
+  <script src="vendor/gsap/ScrollTrigger.min.js"></script>
+  <script src="vendor/lenis/lenis.min.js"></script>
+  <script src="js/foto.js"></script>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
